@@ -1,0 +1,292 @@
+PyHEADTAIL v1.1.1
+
+
+Synchrotron init. From kwargs: machine_configuration = 'Q26-injection'
+Synchrotron init. From kwargs: n_segments = 10
+PyECLOUD Version 4.16
+PyHEADTAIL module
+Initializing ecloud from folder: ./drift_sim
+Ecloud init. From kwargs: init_unif_edens_flag = 1
+Ecloud init. From kwargs: y_aper = 0.038951694528294667
+Ecloud init. From kwargs: x_aper = 0.038951694528294667
+Ecloud init. From kwargs: nel_mp_ref_0 = 606893802.65023232
+Ecloud init. From kwargs: N_mp_max = 400000.0
+Ecloud init. From kwargs: N_MP_ele_init = 100000
+Ecloud init. From kwargs: Dh_sc = 0.00060862022700460417
+Ecloud init. From kwargs: init_unif_edens = 100000000000.0
+Polygonal chamber - cython implementation
+sparse_solver: 'klu' no longer supported --> going to PyKLU
+Start space charge init.
+Start PIC init.:
+FFT, Open Boundary, Square Grid
+PyPIC Version 1.00
+Done space charge init.
+Start impact man. init.
+Done impact man. init.
+Tracker: Boris multipole
+N_subst_init=5
+Adding inital 1.00e+11 electrons/m^3 to the initial distribution
+Turn 0
+Tracking through:
+<PyHEADTAIL.trackers.transverse_tracking.TransverseSegmentMap object at 0x7f13e369f390>
+Tracking through:
+<PyECLOUD.PyEC4PyHT.Ecloud object at 0x7f13e36a71d0>
+Tracking through:
+<PyHEADTAIL.trackers.transverse_tracking.TransverseSegmentMap object at 0x7f13e369f4d0>
+Tracking through:
+<PyECLOUD.PyEC4PyHT.Ecloud object at 0x7f13e36a71d0>
+Tracking through:
+<PyHEADTAIL.trackers.transverse_tracking.TransverseSegmentMap object at 0x7f13e369f610>
+Tracking through:
+<PyECLOUD.PyEC4PyHT.Ecloud object at 0x7f13e36a71d0>
+Tracking through:
+<PyHEADTAIL.trackers.transverse_tracking.TransverseSegmentMap object at 0x7f13e369f750>
+Tracking through:
+<PyECLOUD.PyEC4PyHT.Ecloud object at 0x7f13e36a71d0>
+Tracking through:
+<PyHEADTAIL.trackers.transverse_tracking.TransverseSegmentMap object at 0x7f13e369f890>
+Tracking through:
+<PyECLOUD.PyEC4PyHT.Ecloud object at 0x7f13e36a71d0>
+Tracking through:
+<PyHEADTAIL.trackers.transverse_tracking.TransverseSegmentMap object at 0x7f13e369f9d0>
+Tracking through:
+<PyECLOUD.PyEC4PyHT.Ecloud object at 0x7f13e36a71d0>
+Tracking through:
+<PyHEADTAIL.trackers.transverse_tracking.TransverseSegmentMap object at 0x7f13e369fb10>
+Tracking through:
+<PyECLOUD.PyEC4PyHT.Ecloud object at 0x7f13e36a71d0>
+Tracking through:
+<PyHEADTAIL.trackers.transverse_tracking.TransverseSegmentMap object at 0x7f13e369fc50>
+Tracking through:
+<PyECLOUD.PyEC4PyHT.Ecloud object at 0x7f13e36a71d0>
+Tracking through:
+<PyHEADTAIL.trackers.transverse_tracking.TransverseSegmentMap object at 0x7f13e369fd90>
+Tracking through:
+<PyECLOUD.PyEC4PyHT.Ecloud object at 0x7f13e36a71d0>
+Tracking through:
+<PyHEADTAIL.trackers.transverse_tracking.TransverseSegmentMap object at 0x7f13e369fed0>
+Tracking through:
+<PyECLOUD.PyEC4PyHT.Ecloud object at 0x7f13e36a71d0>
+Tracking through:
+<PyHEADTAIL.trackers.simple_long_tracking.LinearMap object at 0x7f13e369f350>
+Tracking through:
+<PyHEADTAIL.aperture.aperture.EllipticalApertureXY object at 0x7f13df192610>
+Wrote profile results to 000_ecloud_instab_sim.py.lprof
+Timer unit: 1e-06 s
+
+Total time: 12.7484 s
+File: ../PyECLOUD/PyEC4PyHT.py
+Function: track at line 241
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   241                                           	@profile	
+   242                                           	def track(self, beam):
+   243                                           		
+   244                                           		#reinitialize
+   245        10         5107    510.7      0.0  		self.MP_e.x_mp[:] = self.init_x #it is a mutation and not a binding (and we have tested it :-))
+   246        10         5680    568.0      0.0  		self.MP_e.y_mp[:] = self.init_y
+   247        10         5232    523.2      0.0  		self.MP_e.z_mp[:] = self.init_z
+   248        10         5049    504.9      0.0  		self.MP_e.vx_mp[:] = self.init_vx
+   249        10         4782    478.2      0.0  		self.MP_e.vy_mp[:] = self.init_vy
+   250        10         4998    499.8      0.0  		self.MP_e.vz_mp[:] = self.init_vz
+   251        10         4978    497.8      0.0  		self.MP_e.nel_mp[:] = self.init_nel
+   252        10           46      4.6      0.0  		self.MP_e.N_mp = self.init_N_mp
+   253                                           		
+   254        10           27      2.7      0.0  		MP_e = self.MP_e
+   255        10           29      2.9      0.0  		dynamics = self.dynamics
+   256        10           28      2.8      0.0  		impact_man = self.impact_man
+   257        10           28      2.8      0.0  		spacech_ele = self.spacech_ele
+   258                                           
+   259        10           30      3.0      0.0  		if self.save_ele_distributions_last_track:
+   260                                           			self.rho_ele_last_track = []
+   261                                           
+   262        10           28      2.8      0.0  		if self.save_ele_potential_and_field:
+   263                                           			self.phi_ele_last_track = []
+   264                                           			self.Ex_ele_last_track = []
+   265                                           			self.Ey_ele_last_track = []
+   266                                           
+   267        10           28      2.8      0.0  		if self.save_ele_MP_position:
+   268                                           			self.x_MP_last_track = []
+   269                                           			self.y_MP_last_track = []
+   270                                           
+   271        10           28      2.8      0.0  		if self.save_ele_MP_velocity:
+   272                                           			self.vx_MP_last_track = []
+   273                                           			self.vy_MP_last_track = []
+   274                                           
+   275        10           26      2.6      0.0  		if self.save_ele_MP_size:
+   276                                           			self.nel_MP_last_track = []
+   277                                           			
+   278        10           30      3.0      0.0  		if self.save_ele_MP_position or self.save_ele_MP_velocity or self.save_ele_MP_size:
+   279                                           			self.N_MP_last_track = []
+   280                                           			
+   281                                           		
+   282        10          108     10.8      0.0  		if hasattr(beam.particlenumber_per_mp, '__iter__'):
+   283                                           			raise ValueError('ecloud module assumes same size for all beam MPs')
+   284                                           
+   285        10           29      2.9      0.0  		if self.flag_clean_slices:
+   286                                           			beam.clean_slices()
+   287                                           
+   288        10         3480    348.0      0.0  		slices = beam.get_slices(self.slicer)
+   289                                           		
+   290       650         2127      3.3      0.0  		for i in xrange(slices.n_slices-1, -1, -1):
+   291                                           
+   292                                           			# select particles in the slice
+   293       640      2588770   4045.0     20.3  			ix = slices.particle_indices_of_slice(i)
+   294                                           
+   295                                           			# slice size and time step
+   296       640        11551     18.0      0.1  			dz = (slices.z_bins[i + 1] - slices.z_bins[i])
+   297       640         5598      8.7      0.0  			dt = dz / (beam.beta * c)
+   298                                           			
+   299                                           			# define substep
+   300       640         3602      5.6      0.0  			if dt>self.Dt_ref:
+   301                                           				N_sub_steps = int(np.round(dt/self.Dt_ref))
+   302                                           			else:
+   303       640         2567      4.0      0.0  				N_sub_steps=1
+   304                                           				
+   305       640         4768      7.5      0.0  			Dt_substep = dt/N_sub_steps
+   306                                           			#print Dt_substep, N_sub_steps, dt
+   307                                           
+   308                                           			# beam field 
+   309       640         5005      7.8      0.0  			MP_p = MP_light()
+   310       640        78023    121.9      0.6  			MP_p.x_mp = beam.x[ix]
+   311       640        74609    116.6      0.6  			MP_p.y_mp = beam.y[ix]
+   312       640        44942     70.2      0.4  			MP_p.nel_mp = beam.x[ix]*0.+beam.particlenumber_per_mp/dz#they have to become cylinders
+   313       640         4135      6.5      0.0  			MP_p.N_mp = slices.n_macroparticles_per_slice[i]
+   314                                           			#compute beam field (it assumes electrons!)
+   315       640      4760723   7438.6     37.3  			spacech_ele.recompute_spchg_efield(MP_p)
+   316                                           			#scatter to electrons
+   317       640        31350     49.0      0.2  			Ex_n_beam, Ey_n_beam = spacech_ele.get_sc_eletric_field(MP_e)
+   318                                           			# go to actual beam particles 
+   319       640         9045     14.1      0.1  			Ex_n_beam = -Ex_n_beam * beam.charge/e
+   320       640         4839      7.6      0.0  			Ey_n_beam = -Ey_n_beam * beam.charge/e
+   321                                           			
+   322                                           			
+   323                                           			## compute electron field map
+   324       640      4621254   7220.7     36.2  			spacech_ele.recompute_spchg_efield(MP_e)
+   325                                           			
+   326                                           			## compute electron field on electrons
+   327       640        28655     44.8      0.2  			Ex_sc_n, Ey_sc_n = spacech_ele.get_sc_eletric_field(MP_e)
+   328                                           			
+   329                                           			## compute electron field on beam particles
+   330       640        71890    112.3      0.6  			Ex_sc_p, Ey_sc_p = spacech_ele.get_sc_eletric_field(MP_p)
+   331                                           			
+   332                                           			## Total electric field on electrons
+   333       640         4767      7.4      0.0  			Ex_n=Ex_sc_n+Ex_n_beam;
+   334       640         2760      4.3      0.0  			Ey_n=Ey_sc_n+Ey_n_beam;
+   335                                           				
+   336                                           			## save position before motion step
+   337       640         9986     15.6      0.1  			old_pos=MP_e.get_positions()
+   338                                           			
+   339                                           			## motion electrons
+   340       640         9141     14.3      0.1  			MP_e = dynamics.stepcustomDt(MP_e, Ex_n,Ey_n, Dt_substep=Dt_substep, N_sub_steps=N_sub_steps)
+   341                                           			
+   342                                           			## impacts: backtracking and secondary emission
+   343       640        54612     85.3      0.4  			MP_e = impact_man.backtrack_and_second_emiss(old_pos, MP_e)
+   344                                           			
+   345                                           			## kick beam particles
+   346       640         8629     13.5      0.1  			fact_kick = beam.charge/(beam.mass*beam.beta*beam.beta*beam.gamma*c*c)*self.L_ecloud
+   347       640       129257    202.0      1.0  			beam.xp[ix]+=fact_kick*Ex_sc_p
+   348       640       123464    192.9      1.0  			beam.yp[ix]+=fact_kick*Ey_sc_p
+   349                                           			
+   350       640         2602      4.1      0.0  			if self.save_ele_distributions_last_track:
+   351                                           				self.rho_ele_last_track.append(spacech_ele.rho.copy())
+   352                                           				#print 'Here'
+   353                                           
+   354       640         2041      3.2      0.0  			if self.save_ele_potential_and_field:
+   355                                           				self.phi_ele_last_track.append(spacech_ele.phi.copy())
+   356                                           				self.Ex_ele_last_track.append(spacech_ele.efx.copy())
+   357                                           				self.Ey_ele_last_track.append(spacech_ele.efy.copy())
+   358                                           
+   359       640         1969      3.1      0.0  			if self.save_ele_MP_position:
+   360                                           				self.x_MP_last_track.append(MP_e.x_mp.copy())
+   361                                           				self.y_MP_last_track.append(MP_e.y_mp.copy())
+   362                                           
+   363       640         1927      3.0      0.0  			if self.save_ele_MP_velocity:
+   364                                           				self.vx_MP_last_track.append(MP_e.vx_mp.copy())
+   365                                           				self.vy_MP_last_track.append(MP_e.vy_mp.copy())
+   366                                           				
+   367       640         1873      2.9      0.0  			if self.save_ele_MP_size:
+   368                                           				self.nel_MP_last_track.append(MP_e.nel_mp.copy())
+   369                                           				
+   370       640         1930      3.0      0.0  			if self.save_ele_MP_position or self.save_ele_MP_velocity or self.save_ele_MP_size:
+   371                                           				self.N_MP_last_track.append(MP_e.N_mp)
+   372                                           				
+   373        10           26      2.6      0.0  		if self.save_ele_distributions_last_track:
+   374                                           			self.rho_ele_last_track = np.array(self.rho_ele_last_track[::-1])
+   375                                           
+   376        10           28      2.8      0.0  		if self.save_ele_potential_and_field:
+   377                                           			self.phi_ele_last_track = np.array(self.phi_ele_last_track[::-1])
+   378                                           			self.Ex_ele_last_track = np.array(self.Ex_ele_last_track[::-1])
+   379                                           			self.Ey_ele_last_track = np.array(self.Ey_ele_last_track[::-1])
+   380                                           
+   381        10           29      2.9      0.0  		if self.save_ele_MP_position:
+   382                                           			self.x_MP_last_track = np.array(self.x_MP_last_track[::-1])
+   383                                           			self.y_MP_last_track = np.array(self.y_MP_last_track[::-1])
+   384                                           
+   385        10           27      2.7      0.0  		if self.save_ele_MP_velocity:
+   386                                           			self.vx_MP_last_track = np.array(self.vx_MP_last_track[::-1])
+   387                                           			self.vy_MP_last_track = np.array(self.vy_MP_last_track[::-1])
+   388                                           
+   389        10           30      3.0      0.0  		if self.save_ele_MP_size:
+   390                                           			self.nel_MP_last_track = np.array(self.nel_MP_last_track[::-1])
+   391                                           			
+   392        10           31      3.1      0.0  		if self.save_ele_MP_position or self.save_ele_MP_velocity or self.save_ele_MP_size:
+   393                                           				self.N_MP_last_track = np.array(self.N_MP_last_track[::-1])
+
+Total time: 9.34416 s
+File: ../PyECLOUD/space_charge_class.py
+Function: recompute_spchg_efield at line 130
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   130                                               @profile
+   131                                               def recompute_spchg_efield(self, MP_e, t_curr=None, force=False):
+   132                                                   
+   133      1280         3230      2.5      0.0          flag_recompute=True              
+   134      1280         2968      2.3      0.0          if self.flag_decimate:
+   135                                                       flag_recompute = (t_curr - self.t_last_recom)>=self.Dt_sc
+   136                                                   
+   137      1280         2933      2.3      0.0          if flag_recompute or force:
+   138      1280         3044      2.4      0.0              self.t_last_recom = t_curr
+   139      1280      9327939   7287.5     99.8              self.PyPICobj.scatter_and_solve(MP_e.x_mp[0:MP_e.N_mp],MP_e.y_mp[0:MP_e.N_mp],MP_e.nel_mp[0:MP_e.N_mp])
+   140                                           			#~ U_sc_eV_stp = -0.5*eps0*np.sum(b*phi)*self.Dh*self.Dh/qe
+   141      1280         4044      3.2      0.0          self.flag_recomputed_sc=flag_recompute
+
+Total time: 9.09496 s
+File: ../PyPIC/FFT_OpenBoundary_SquareGrid.py
+Function: solve at line 129
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   129                                               @profile    
+   130                                               def solve(self, rho = None, flag_verbose = False):
+   131      1280         3817      3.0      0.0  		if rho == None:
+   132      1280         2984      2.3      0.0  			rho = self.rho
+   133                                           
+   134      1280       118645     92.7      1.3  		tmprho = 0.*self.fgreen
+   135      1280        33205     25.9      0.4  		tmprho[:self.ny, :self.nx] = rho.T
+   136                                           
+   137      1280      4395935   3434.3     48.3  		fftphi = self.fft2(tmprho) * self.fgreentr
+   138                                           
+   139      1280      4148309   3240.9     45.6  		tmpphi = self.ifft2(fftphi)
+   140      1280       113445     88.6      1.2  		self.phi = 1./(4. * np.pi * eps0)*np.real(tmpphi[:self.ny, :self.nx]).T
+   141                                           
+   142      1280        89607     70.0      1.0  		self.efx[1:self.Nxg-1,:] = self.phi[0:self.Nxg-2,:] - self.phi[2:self.Nxg,:];  #central difference on internal nodes
+   143      1280        51168     40.0      0.6  		self.efy[:,1:self.Nyg-1] = self.phi[:,0:self.Nyg-2] - self.phi[:,2:self.Nyg];  #central difference on internal nodes
+   144                                           
+   145                                           		
+   146      1280        73892     57.7      0.8  		self.efy = self.efy/(2*self.Dh)
+   147      1280        63955     50.0      0.7  		self.efx = self.efx/(2*self.Dh)
+
+Total time: 9.3055 s
+File: ../PyPIC/PyPIC_Scatter_Gather.py
+Function: scatter_and_solve at line 142
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   142                                           	@profile
+   143                                           	def scatter_and_solve(self, x_mp, y_mp, nel_mp, charge = -qe):
+   144      1280       132235    103.3      1.4  		self.scatter(x_mp, y_mp, nel_mp, charge)
+   145      1280      9173267   7166.6     98.6  		self.solve()
+
