@@ -5,9 +5,14 @@ sys.path.append(BIN)
 
 import numpy as np
 import pylab as pl
+import mystyle as ms
 
-#~ filename = 'headtail_for_test/test_protons/SPS_Q20_proton_check_prb.dat'
+
 filename = 'headtail_for_test/test_protons/SPS_Q20_proton_check_20150212_prb.dat'
+B_multip = [0.]
+
+#~ filename = 'headtail_for_test/test_protons/SPS_Q20_proton_check_dipole_20150212_prb.dat'
+#~ B_multip = [0.5]
 
 n_part_per_turn = 5000
 
@@ -23,8 +28,8 @@ zp = np.reshape(appo[:,6], (-1, n_part_per_turn))
 N_turns = len(x[:,0])
 
 pl.close('all')
-#~ pl.plot(xp[:, 100], '.-')
-#~ pl.show()
+ms.mystyle(fontsz=14)
+
 
 # define machine for PyHEADTAIL
 from PyHEADTAIL.particles.slicing import UniformBinSlicer
@@ -64,11 +69,12 @@ ecloud = PyEC4PyHT.Ecloud(L_ecloud=machine.circumference, slicer=slicer,
 				init_unif_edens=init_unif_edens, 
 				N_MP_ele_init=N_MP_ele_init,
 				N_mp_max=N_mp_max,
-				nel_mp_ref_0=nel_mp_ref_0)
+				nel_mp_ref_0=nel_mp_ref_0,
+				B_multip=B_multip)
 machine.install_after_each_transverse_segment(ecloud)
 
-ecloud.save_ele_distributions_last_track = True
-ecloud.save_ele_potential_and_field = True
+#~ ecloud.save_ele_distributions_last_track = True
+#~ ecloud.save_ele_potential_and_field = True
 				
 # generate a bunch 
 bunch = machine.generate_6D_Gaussian_bunch(n_macroparticles=300000, intensity=1.15e11, epsn_x=epsn_x, epsn_y=epsn_y, sigma_z=0.2)
@@ -88,6 +94,7 @@ xp_before = bunch.xp[bunch.id<=n_part_per_turn]
 yp_before = bunch.yp[bunch.id<=n_part_per_turn]
 
 rms_err_x_list = []
+rms_err_y_list = []
 for ii in xrange(N_turns-1):
 	# track
 	machine.track(bunch, verbose = True)
@@ -105,23 +112,64 @@ for ii in xrange(N_turns-1):
 	yp_after = np.take(yp_after, indsort)
 	z_after = np.take(z_after, indsort)
 
-	pl.figure(100+ii)
-	sp1 = pl.subplot(2,1,1)
-	pl.plot(z_after,  (100*np.abs((xp_after-xp_before)-(xp[ii+1, :]-xp[0, :]))/np.std(bunch.xp)), '.r')
+	fig = pl.figure(100, figsize=(18,10))
+	pl.clf()
+	sp1 = pl.subplot(2,3,1)
+	pl.plot(z_after,  (100*np.abs((xp_after-xp_before)-(xp[ii+1, :]-xp[0, :]))/np.std(xp[ii+1, :]-xp[0, :])), '.r', markersize = 2)
 	pl.grid('on')
-	pl.subplot(2,1,2, sharex=sp1)
-	pl.plot(z_after,  (xp[ii+1, :]-xp[0, :]), '.r')
-	pl.plot(z_after,  (xp_after-xp_before), '.b')
+	pl.ylabel('''rms_error($\Delta$x')/rms($\Delta$x') [%]''')
+	pl.subplot(2,3,4, sharex=sp1)
+	pl.plot(z_after,  (xp[ii+1, :]-xp[0, :]), '.r', label='HT', markersize = 2)
+	pl.plot(z_after,  (xp_after-xp_before), '.b', label='PyHT', markersize = 2)
+	ms.sciy()
 	pl.grid('on')
-	rms_err_x = np.std(100*np.abs((xp_after-xp_before)-(xp[ii+1, :]-xp[0, :]))/np.std(bunch.xp))
-	pl.suptitle('rms_err = %e'%rms_err_x)
+	pl.ylabel("$\Delta$x'")
+	pl.xlabel('z[m]')
+	pl.legend(prop = {'size':14})
+	pl.subplot(2,3,3)
+	pl.hist((100*np.abs((xp_after-xp_before)-(xp[ii+1, :]-xp[0, :]))/np.std(xp[ii+1, :]-xp[0, :])), bins=100, range=(0,100))
+	pl.xlabel('Error_x [%]')
+	pl.ylabel('Occurrences')
+	pl.xlim(0,100)
+	rms_err_x = np.std(100*np.abs((xp_after-xp_before)-(xp[ii+1, :]-xp[0, :]))/np.std(xp[ii+1, :]-xp[0, :]))
+	
+	sp1 = pl.subplot(2,3,2)
+	pl.plot(z_after,  (100*np.abs((yp_after-yp_before)-(yp[ii+1, :]-yp[0, :]))/np.std(yp[ii+1, :]-yp[0, :])), '.r', markersize = 2)
+	pl.grid('on')
+	pl.ylabel('''rms_error($\Delta$y')/rms($\Delta$y') [%]''')
+	pl.subplot(2,3,5, sharex=sp1)
+	pl.plot(z_after,  (yp[ii+1, :]-yp[0, :]), '.r', label='HT', markersize = 2)
+	pl.plot(z_after,  (yp_after-yp_before), '.b', label='PyHT', markersize = 2)
+	ms.sciy()
+	pl.grid('on')
+	pl.ylabel("$\Delta$y'")
+	pl.xlabel('z[m]')
+	pl.legend(prop = {'size':14})
+	pl.subplot(2,3,6)
+	pl.hist((100*np.abs((yp_after-yp_before)-(yp[ii+1, :]-yp[0, :]))/np.std(yp[ii+1, :]-yp[0, :])), bins=100, range=(0,100))
+	pl.xlim(0,100)
+	pl.xlabel('Error_y [%]')
+	pl.ylabel('Occurrences')
+	rms_err_y = np.std(100*np.abs((yp_after-yp_before)-(yp[ii+1, :]-yp[0, :]))/np.std(yp[ii+1, :]-yp[0, :]))
+	
+	
+	pl.suptitle('Turn %d rms_err_x = %e rms_err_y = %e'%(ii, rms_err_x, rms_err_y))
+	
+	pl.savefig(filename.split('_prb.dat')[0]+'_%02d.png'%ii, dpi=150)
 	
 	rms_err_x_list.append(rms_err_x)
+	rms_err_y_list.append(rms_err_y)
 
 	pl.show()
 	
 pl.figure(1000)
-pl.plot(rms_err_x_list, '.-')
+pl.plot(rms_err_x_list, '.-', markersize = 10, linewidth=2, label='x')
+pl.plot(rms_err_y_list, '.-', markersize = 10, linewidth=2, label='y')
+pl.grid('on')
+pl.ylabel('''Relative r.m.s. error [%]''')
+pl.xlabel('Turn')
+pl.legend()
+pl.savefig(filename.split('_prb.dat')[0]+'_errors.png', dpi=200)
 pl.show()
 
 slices = bunch.get_slices(ecloud.slicer)
