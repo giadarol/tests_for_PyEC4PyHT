@@ -10,21 +10,27 @@ import mystyle as ms
 
 filename = 'headtail_for_test/test_protons/SPS_Q20_proton_check_20150212_prb.dat'
 B_multip = [0.]
+N_kicks = 1
 
 #~ filename = 'headtail_for_test/test_protons/SPS_Q20_proton_check_dipole_20150212_prb.dat'
 #~ B_multip = [0.5]
+#~ N_kicks = 1
+
+filename = 'headtail_for_test/test_protons/SPS_Q20_proton_check_dipole_3kicks_20150212_prb.dat'
+B_multip = [0.5]
+N_kicks = 3
 
 n_part_per_turn = 5000
 
 appo = np.loadtxt(filename)
 
-parid = np.reshape(appo[:,0], (-1, n_part_per_turn))
-x = np.reshape(appo[:,1], (-1, n_part_per_turn))
-xp = np.reshape(appo[:,2], (-1, n_part_per_turn))
-y = np.reshape(appo[:,3], (-1, n_part_per_turn))
-yp =np.reshape(appo[:,4], (-1, n_part_per_turn))
-z = np.reshape(appo[:,5], (-1, n_part_per_turn))
-zp = np.reshape(appo[:,6], (-1, n_part_per_turn))
+parid = np.reshape(appo[:,0], (-1, n_part_per_turn))[::N_kicks,:]
+x = np.reshape(appo[:,1], (-1, n_part_per_turn))[::N_kicks,:]
+xp = np.reshape(appo[:,2], (-1, n_part_per_turn))[::N_kicks,:]
+y = np.reshape(appo[:,3], (-1, n_part_per_turn))[::N_kicks,:]
+yp =np.reshape(appo[:,4], (-1, n_part_per_turn))[::N_kicks,:]
+z = np.reshape(appo[:,5], (-1, n_part_per_turn))[::N_kicks,:]
+zp = np.reshape(appo[:,6], (-1, n_part_per_turn))[::N_kicks,:]
 N_turns = len(x[:,0])
 
 pl.close('all')
@@ -34,7 +40,7 @@ ms.mystyle(fontsz=14)
 # define machine for PyHEADTAIL
 from PyHEADTAIL.particles.slicing import UniformBinSlicer
 from SPS_custom import SPS
-machine = SPS(n_segments = 1, machine_configuration = 'Q20-injection', Q_x=20., Q_y=20.)
+machine = SPS(n_segments = N_kicks, machine_configuration = 'Q20-injection', Q_x=20., Q_y=20.)
 
 
 # compute sigma x and y
@@ -62,7 +68,7 @@ N_mp_max = N_MP_ele_init*4.
 nel_mp_ref_0 = init_unif_edens*4*x_aper*y_aper/N_MP_ele_init
 
 
-ecloud = PyEC4PyHT.Ecloud(L_ecloud=machine.circumference, slicer=slicer, 
+ecloud = PyEC4PyHT.Ecloud(L_ecloud=machine.circumference/N_kicks, slicer=slicer, 
 				Dt_ref=25e-12, pyecl_input_folder='./drift_sim',
 				x_aper=x_aper, y_aper=y_aper, Dh_sc=Dh_sc,
 				init_unif_edens_flag=init_unif_edens_flag,
