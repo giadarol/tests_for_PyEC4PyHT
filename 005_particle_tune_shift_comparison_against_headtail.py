@@ -7,11 +7,19 @@ import numpy as np
 import pylab as pl
 import mystyle as ms
 
+
+#~ filename = 'headtail_for_test/test_protons/shortSPS_Q20_proton_check_tune_spread_prb.dat'
+#~ N_kicks = 5
+#~ n_segments = 5
+#~ B_multip = [0.]
+
+
+filename = 'headtail_for_test/test_protons/shortSPS_Q20_proton_check_tune_spread_dipole_prb.dat'
 N_kicks = 5
 n_segments = 5
-B_multip = [0.]
+B_multip = [0.5]
 
-filename = 'headtail_for_test/test_protons/shortSPS_Q20_proton_check_tune_spread_prb.dat'
+
 
 
 n_record = 1000
@@ -73,7 +81,7 @@ bunch.dp[:n_part_per_turn] =zp[0,:]
 # define apertures and Dh_sc to simulate headtail conditions
 x_aper  = 20*sigma_x
 y_aper  = 20*sigma_y
-Dh_sc = 2*x_aper/128
+Dh_sc = 2*x_aper/128/2.
 
 # ecloud
 import PyECLOUD.PyEC4PyHT as PyEC4PyHT
